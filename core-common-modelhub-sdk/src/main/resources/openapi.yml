@@ -1,0 +1,879 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:18080
+  description: Generated server url
+tags:
+- name: Virtual Entities
+  description: API for managing virtual entity definitions
+- name: Dynamic Entity APIs
+  description: Dynamic API endpoints for virtual entities
+- name: Virtual Entity Fields
+  description: API for managing virtual entity field definitions
+paths:
+  /api/v1/fields/{id}:
+    get:
+      tags:
+      - Virtual Entity Fields
+      summary: Get a field by ID
+      description: Returns a virtual entity field definition by its ID
+      operationId: getFieldById
+      parameters:
+      - name: id
+        in: path
+        description: ID of the field to retrieve
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityFieldDto"
+        "404":
+          description: Field not found
+    put:
+      tags:
+      - Virtual Entity Fields
+      summary: Update a field
+      description: Updates an existing field definition
+      operationId: updateField
+      parameters:
+      - name: id
+        in: path
+        description: ID of the field to update
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VirtualEntityFieldDto"
+        required: true
+      responses:
+        "200":
+          description: Field updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityFieldDto"
+        "400":
+          description: Invalid input
+        "404":
+          description: Field not found
+    delete:
+      tags:
+      - Virtual Entity Fields
+      summary: Delete a field
+      description: Deletes a field definition
+      operationId: deleteField
+      parameters:
+      - name: id
+        in: path
+        description: ID of the field to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Field deleted successfully
+        "404":
+          description: Field not found
+  /api/v1/entities/{id}:
+    get:
+      tags:
+      - Virtual Entities
+      summary: Get a virtual entity by ID
+      description: Returns a virtual entity definition by its ID
+      operationId: getEntityById
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entity to retrieve
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityDto"
+        "404":
+          description: Entity not found
+    put:
+      tags:
+      - Virtual Entities
+      summary: Update a virtual entity
+      description: Updates an existing virtual entity definition
+      operationId: updateEntity
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entity to update
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VirtualEntityDto"
+        required: true
+      responses:
+        "200":
+          description: Entity updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityDto"
+        "400":
+          description: Invalid input
+        "404":
+          description: Entity not found
+    delete:
+      tags:
+      - Virtual Entities
+      summary: Delete a virtual entity
+      description: Deletes a virtual entity definition and all its fields and records
+      operationId: deleteEntity
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entity to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Entity deleted successfully
+        "404":
+          description: Entity not found
+  /api/dynamic/{entityName}/{id}:
+    get:
+      tags:
+      - Dynamic Entity APIs
+      summary: Get a record by ID for a specific entity
+      description: Returns a virtual entity record by its ID for a specific entity
+        identified by name
+      operationId: getRecordByIdForEntity
+      parameters:
+      - name: entityName
+        in: path
+        description: Name of the entity
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of the record to retrieve
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityRecordDto"
+        "404":
+          description: Entity or record not found
+    put:
+      tags:
+      - Dynamic Entity APIs
+      summary: Update a record for a specific entity
+      description: Updates an existing record for a virtual entity identified by name
+      operationId: updateRecordForEntity
+      parameters:
+      - name: entityName
+        in: path
+        description: Name of the entity
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of the record to update
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+              description: Updated record data
+        required: true
+      responses:
+        "200":
+          description: Record updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityRecordDto"
+        "400":
+          description: Invalid input or validation error
+        "404":
+          description: Entity or record not found
+    delete:
+      tags:
+      - Dynamic Entity APIs
+      summary: Delete a record for a specific entity
+      description: Deletes a record for a virtual entity identified by name
+      operationId: deleteRecordForEntity
+      parameters:
+      - name: entityName
+        in: path
+        description: Name of the entity
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of the record to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Record deleted successfully
+        "404":
+          description: Entity or record not found
+  /api/v1/fields:
+    post:
+      tags:
+      - Virtual Entity Fields
+      summary: Create a new field
+      description: Creates a new field definition for a virtual entity
+      operationId: createField
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VirtualEntityFieldDto"
+        required: true
+      responses:
+        "201":
+          description: Field created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityFieldDto"
+        "400":
+          description: Invalid input
+        "404":
+          description: Entity not found
+  /api/v1/entities:
+    get:
+      tags:
+      - Virtual Entities
+      summary: Get all virtual entities
+      description: Returns a list of all virtual entity definitions
+      operationId: getAllEntities
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VirtualEntityDto"
+    post:
+      tags:
+      - Virtual Entities
+      summary: Create a new virtual entity
+      description: Creates a new virtual entity definition
+      operationId: createEntity
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VirtualEntityDto"
+        required: true
+      responses:
+        "201":
+          description: Entity created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityDto"
+        "400":
+          description: Invalid input
+  /api/dynamic/{entityName}/query:
+    post:
+      tags:
+      - Dynamic Entity APIs
+      summary: Query records for a specific entity
+      description: Executes a query against records for a virtual entity identified
+        by name
+      operationId: queryRecordsForEntity
+      parameters:
+      - name: entityName
+        in: path
+        description: Name of the entity
+        required: true
+        schema:
+          type: string
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryDto"
+        required: true
+      responses:
+        "200":
+          description: Query executed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+        "400":
+          description: Invalid query
+        "404":
+          description: Entity not found
+  /api/dynamic/{entityName}:
+    get:
+      tags:
+      - Dynamic Entity APIs
+      summary: Get all records for an entity by name
+      description: Returns a list of all records for a specific virtual entity identified
+        by name
+      operationId: getAllRecordsByEntityName
+      parameters:
+      - name: entityName
+        in: path
+        description: Name of the entity to retrieve records for
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page number (zero-based)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        description: Page size
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: Entity not found
+    post:
+      tags:
+      - Dynamic Entity APIs
+      summary: Create a new record for a specific entity
+      description: Creates a new record for a virtual entity identified by name
+      operationId: createRecordForEntity
+      parameters:
+      - name: entityName
+        in: path
+        description: Name of the entity
+        required: true
+        schema:
+          type: string
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VirtualEntityRecordDto"
+        required: true
+      responses:
+        "201":
+          description: Record created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityRecordDto"
+        "400":
+          description: Invalid input or validation error
+        "404":
+          description: Entity not found
+  /api/v1/fields/entity/{entityId}:
+    get:
+      tags:
+      - Virtual Entity Fields
+      summary: Get all fields for an entity
+      description: Returns a list of all fields defined for a specific virtual entity
+      operationId: getFieldsByEntityId
+      parameters:
+      - name: entityId
+        in: path
+        description: ID of the entity to retrieve fields for
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VirtualEntityFieldDto"
+        "404":
+          description: Entity not found
+  /api/v1/entities/{name}/schema:
+    get:
+      tags:
+      - Virtual Entities
+      summary: Get the schema for a virtual entity
+      description: Returns the complete schema (entity definition and fields) for
+        a virtual entity
+      operationId: getEntitySchema
+      parameters:
+      - name: name
+        in: path
+        description: Name of the entity to retrieve the schema for
+        required: true
+        schema:
+          type: string
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntitySchemaDto"
+        "404":
+          description: Entity not found
+  /api/v1/entities/name/{name}:
+    get:
+      tags:
+      - Virtual Entities
+      summary: Get a virtual entity by name
+      description: Returns a virtual entity definition by its name
+      operationId: getEntityByName
+      parameters:
+      - name: name
+        in: path
+        description: Name of the entity to retrieve
+        required: true
+        schema:
+          type: string
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VirtualEntityDto"
+        "404":
+          description: Entity not found
+components:
+  schemas:
+    VirtualEntityFieldDto:
+      required:
+      - entityId
+      - fieldKey
+      - fieldType
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        entityId:
+          type: string
+          description: Parent entity ID
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        fieldKey:
+          type: string
+          description: Field key (used in code/API)
+          example: firstName
+        fieldLabel:
+          type: string
+          description: Field label (displayed to users)
+          example: First Name
+        fieldType:
+          type: string
+          description: Field data type
+          example: string
+        required:
+          type: boolean
+          description: Whether the field is required
+          example: true
+        options:
+          type: object
+          additionalProperties:
+            type: object
+            description: "Additional field options (validation, UI hints, etc.)"
+          description: "Additional field options (validation, UI hints, etc.)"
+        orderIndex:
+          type: integer
+          description: Display order index
+          format: int32
+          example: 1
+        createdBy:
+          type: string
+          description: Created by user
+          example: admin
+        createdAt:
+          type: string
+          description: Creation timestamp
+          format: date-time
+        updatedBy:
+          type: string
+          description: Last updated by user
+          example: admin
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          format: date-time
+      description: Field to create
+    VirtualEntityDto:
+      required:
+      - active
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          description: Entity name
+          example: customer
+        description:
+          type: string
+          description: Entity description
+          example: Customer entity for storing customer information
+        version:
+          type: integer
+          description: Entity version
+          format: int32
+          example: 1
+        active:
+          type: boolean
+          description: Whether the entity is active
+          example: true
+        createdBy:
+          type: string
+          description: Created by user
+          example: admin
+        createdAt:
+          type: string
+          description: Creation timestamp
+          format: date-time
+        updatedBy:
+          type: string
+          description: Last updated by user
+          example: admin
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          format: date-time
+      description: Entity to create
+    VirtualEntityRecordDto:
+      required:
+      - entityId
+      - payload
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        entityId:
+          type: string
+          description: Parent entity ID
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        payload:
+          type: object
+          additionalProperties:
+            type: object
+            description: Record data payload
+          description: Record data payload
+        createdBy:
+          type: string
+          description: Created by user
+          example: admin
+        createdAt:
+          type: string
+          description: Creation timestamp
+          format: date-time
+        updatedBy:
+          type: string
+          description: Last updated by user
+          example: admin
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          format: date-time
+      description: Record to create
+    QueryConditionDto:
+      required:
+      - field
+      - operator
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field key to query on
+          example: firstName
+        operator:
+          type: string
+          description: Operator for the condition
+          example: eq
+        value:
+          type: object
+          description: Value to compare against
+          example: John
+      description: Query condition
+    QueryDto:
+      required:
+      - entityId
+      type: object
+      properties:
+        entityId:
+          type: string
+          description: Entity ID to query
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        queryString:
+          type: string
+          description: SQL-like query string (alternative to structured conditions)
+          example: firstName = 'John' AND age > 30 ORDER BY lastName ASC
+        rootGroup:
+          $ref: "#/components/schemas/QueryGroupDto"
+        conditions:
+          type: array
+          description: List of conditions to apply (for backward compatibility)
+          items:
+            $ref: "#/components/schemas/QueryConditionDto"
+        logicalOperator:
+          type: string
+          description: Logical operator to combine conditions (for backward compatibility)
+          example: AND
+          default: AND
+          enum:
+          - AND
+          - OR
+        sortField:
+          type: string
+          description: Field to sort by
+          example: firstName
+        sortDirection:
+          type: string
+          description: Sort direction
+          example: ASC
+          default: ASC
+          enum:
+          - ASC
+          - DESC
+        page:
+          type: integer
+          description: Page number (zero-based)
+          format: int32
+          example: 0
+          default: 0
+        size:
+          type: integer
+          description: Page size
+          format: int32
+          example: 20
+          default: 20
+      description: Query definition
+    QueryGroupDto:
+      type: object
+      properties:
+        conditions:
+          type: array
+          description: List of conditions in this group
+          items:
+            $ref: "#/components/schemas/QueryConditionDto"
+        groups:
+          type: array
+          description: List of nested condition groups
+          items:
+            $ref: "#/components/schemas/QueryGroupDto"
+        logicalOperator:
+          type: string
+          description: Logical operator to combine conditions and groups
+          example: AND
+          default: AND
+          enum:
+          - AND
+          - OR
+      description: Query condition group
+    VirtualEntitySchemaDto:
+      type: object
+      properties:
+        entity:
+          $ref: "#/components/schemas/VirtualEntityDto"
+        fields:
+          type: array
+          description: Entity fields
+          items:
+            $ref: "#/components/schemas/VirtualEntityFieldDto"
+      description: Virtual entity schema definition
