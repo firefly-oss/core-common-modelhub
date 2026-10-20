@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>core-common-modelhub-sdk</artifactId>
+    <name>core-common-modelhub-sdk</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

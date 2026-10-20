@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>core-common-modelhub</artifactId>
+    <name>core-common-modelhub</name>
     <packaging>pom</packaging>
     <modules>
         <module>core-common-modelhub-core</module>
