@@ -878,7 +878,7 @@ createdb modelhub
 
 ```bash
 # Clone repository
-git clone https://github.com/firefly/core-common-modelhub.git
+git clone https://github.com/firefly-oss/core-common-modelhub.git
 cd core-common-modelhub
 
 # Configure database connection
@@ -1110,7 +1110,7 @@ export LOGGING_LEVEL_COM_CATALIS=DEBUG
 # Or in application.yaml
 logging:
   level:
-    com.firefly: DEBUG
+    io.fireflysoftware: DEBUG
 ```
 
 #### Check Application Health
