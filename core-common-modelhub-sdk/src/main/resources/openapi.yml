@@ -644,6 +644,7 @@ components:
           format: uuid
           example: 123e4567-e89b-12d3-a456-426614174000
         fieldKey:
+          minLength: 1
           type: string
           description: Field key (used in code/API)
           example: firstName
@@ -652,6 +653,7 @@ components:
           description: Field label (displayed to users)
           example: First Name
         fieldType:
+          minLength: 1
           type: string
           description: Field data type
           example: string
@@ -699,6 +701,7 @@ components:
           format: uuid
           example: 123e4567-e89b-12d3-a456-426614174000
         name:
+          minLength: 1
           type: string
           description: Entity name
           example: customer
@@ -815,10 +818,10 @@ components:
           type: string
           description: Logical operator to combine conditions (for backward compatibility)
           example: AND
-          default: AND
           enum:
           - AND
           - OR
+          default: AND
         sortField:
           type: string
           description: Field to sort by
@@ -827,10 +830,10 @@ components:
           type: string
           description: Sort direction
           example: ASC
-          default: ASC
           enum:
           - ASC
           - DESC
+          default: ASC
         page:
           type: integer
           description: Page number (zero-based)
@@ -861,10 +864,10 @@ components:
           type: string
           description: Logical operator to combine conditions and groups
           example: AND
-          default: AND
           enum:
           - AND
           - OR
+          default: AND
       description: Query condition group
     VirtualEntitySchemaDto:
       type: object
